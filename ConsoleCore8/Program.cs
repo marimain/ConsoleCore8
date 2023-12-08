@@ -2,4 +2,4 @@
 using ConsoleCore8.CoinChange;
 
 //Console.WriteLine("Hello, World!");
-Main.Process();
+ConsoleCore8.SortArray_912.Main.Process();
