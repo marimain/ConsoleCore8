@@ -1,2 +1,5 @@
 ﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+using ConsoleCore8.CoinChange;
+
+//Console.WriteLine("Hello, World!");
+Main.Process();
