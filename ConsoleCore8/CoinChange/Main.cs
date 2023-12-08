@@ -97,7 +97,7 @@ namespace ConsoleCore8.CoinChange
         {
             for(int i = 0; i < c.Count(); i++)
             {
-                int v = v[i];
+                int v = c[i];
             }
             return 0;
         }
