@@ -29,7 +29,6 @@ namespace ConsoleCore8.SortArray_912
             mergeSort(nums, l, m);
             mergeSort(nums, m + 1, r);
             merge(nums, l, m, r);
-
         }
 
         private static void merge(int[] A, int l, int m, int r)
