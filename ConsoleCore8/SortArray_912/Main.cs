@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Headers;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -11,7 +12,7 @@ namespace ConsoleCore8.SortArray_912
 {
     internal class Main
     {
-        static int[] nums = { 4, 5, 11, 2, 258, 3, 1, 8, 9, 101, 4, 88, 2, 32, 245 };
+        static int[] nums = { 4, 5, 11, 2, 258, 3, 1, 8, 9, 345, 4, 88, 2, 32, 245,25,54,48,78 };
         
         public static void Process()
         {
@@ -19,15 +20,37 @@ namespace ConsoleCore8.SortArray_912
             int[] arl = nums[0..m];
             int[] arr = nums[m..];
 
-            int l = 0;
-            int r = m;
-            int a = FindMax(arl, arr);
+            int a = Maxnumber(nums);
+            //int a = FindMax(arl, arr);
             //int a = mergeSort(nums, l, m);
             System.Diagnostics.Debug.WriteLine("max number: {0}", a);
         }
+        private static int Maxnumber(int[] ar)
+        {
+            int ret = 0;
+            int retl = 0, retr = 0;
+
+            if (ar.Count() < 3)
+            {
+                if (ar.Count() == 1)
+                {
+                    return ar[0];
+                }
+                else
+                {
+                    return ar[0] > ar[1] ? ar[0] : ar[1];
+                }
+                
+            }
+            int m = ar.Count() / 2;
+            retl =Maxnumber(ar[0..m]);
+            retr = Maxnumber(ar[m..]);
+            ret = retl > retr ? retl : retr;
+            return ret;
+        }
         private static int FindMax(int[] arl, int[] arr)
         {
-            //{ 4, 5,11, 2, 258,3, 1,8,9,101,4,88,2,32,245}
+            //{ 4, 5, 11, 2, 258, 3, 1, 8, 9, 101, 4, 88, 2, 32, 245,25,54,48,78 };
             //4,5,11  2,3,1
             int retl = 0;
             int retr = 0;
