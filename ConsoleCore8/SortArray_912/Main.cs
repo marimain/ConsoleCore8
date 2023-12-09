@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -10,16 +11,88 @@ namespace ConsoleCore8.SortArray_912
 {
     internal class Main
     {
-        static int[] nums =  { 5, 2, 3, 1 };
+        static int[] nums = { 4, 5, 11, 2, 258, 3, 1, 8, 9, 101, 4, 88, 2, 32, 245 };
         
         public static void Process()
         {
-          
-            mergeSort(nums, 0, nums.Count() - 1);
+            int m = nums.Count() / 2;
+            int[] arl = nums[0..m];
+            int[] arr = nums[m..];
 
+            int l = 0;
+            int r = m;
+            int a = FindMax(arl, arr);
+            //int a = mergeSort(nums, l, m);
+            System.Diagnostics.Debug.WriteLine("max number: {0}", a);
         }
+        private static int FindMax(int[] arl, int[] arr)
+        {
+            //{ 4, 5,11, 2, 258,3, 1,8,9,101,4,88,2,32,245}
+            //4,5,11  2,3,1
+            int retl = 0;
+            int retr = 0;
+            if (arl.Count() > 2)
+            {
+                int ml = arl.Count() / 2;
+                retl = FindMax(arl[0..ml], arl[ml..]);
+            }
+            else
+            {
+                if (arl.Count() == 1)
+                {
+                    retl = arl[0];
+                }
+                else
+                {
+                    retl = arl[0] > arl[1] ? arl[0] : arl[1];
+                }
+                
+            }
+            if (arr.Count() > 2)
+            {
+                int mr = arr.Count() / 2;
+                retr = FindMax(arr[0..mr], arr[mr..]);
+            }
+            else
+            {
+                if (arr.Count() == 1)
+                {
+                    retr = arr[0];
+                }
+                else
+                {
+                    retr = arr[0] > arr[1] ? arr[0] : arr[1];
+                }
+                
+            }
 
-        private static void mergeSort(int[] nums, int l, int r)
+            if (retl > retr)
+            {
+                return retl;
+            }
+            else
+            {
+               return retr;
+            }
+            
+        }
+        private static int mergeSort(int[] ar, int l, int r)
+        {
+            int ret = 0;
+            int m= (l + r) / 2;
+            int[] arl = ar[0..m];
+            int[] arr = ar[m..];
+            if (l >= r)
+            {
+                return ret;
+            }
+
+            mergeSort(nums, l, m);
+            mergeSort(nums, m + 1, r);
+
+            return ret;
+        }
+        private static void mergeSort2(int[] nums, int l, int r)
         {
             if (l>=r)
             {
