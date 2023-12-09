@@ -4,30 +4,58 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ConsoleCore8.SortArray_912
 {
     internal class Main
     {
-        static int[] nums = { 5,2,3,1,4,3,7 };
-        public static int[] Process()
+        static int[] nums =  { 5, 2, 3, 1 };
+        
+        public static void Process()
         {
-            string[] words = {
-                // index from start    index from end
-    "The",      // 0                   ^9
-    "quick",    // 1                   ^8
-    "brown",    // 2                   ^7
-    "fox",      // 3                   ^6
-    "jumps",    // 4                   ^5
-    "over",     // 5                   ^4
-    "the",      // 6                   ^3
-    "lazy",     // 7                   ^2
-    "dog"       // 8                   ^1
-            };          
-            string[] lazyDog = words[^2..^0];
-           // subprocess(nums, 0);
+          
+            mergeSort(nums, 0, nums.Count() - 1);
 
-            return new int[]{ };
+        }
+
+        private static void mergeSort(int[] nums, int l, int r)
+        {
+            if (l>=r)
+            {
+                return;
+            }
+            var m= (l + r) / 2;
+            mergeSort(nums, l, m);
+            mergeSort(nums, m + 1, r);
+            merge(nums, l, m, r);
+
+        }
+
+        private static void merge(int[] A, int l, int m, int r)
+        {
+            int[] sorted = new int[r - l + 1];
+            int k = 0;     // sorted's index
+            int i = l;     // left's index
+            int j = m + 1; // right's index
+
+            while (i <= m && j <= r)
+                if (A[i] < A[j])
+                    sorted[k++] = A[i++];
+                else
+                    sorted[k++] = A[j++];
+
+            // Put the possible remaining left part into the sorted array.
+            while (i <= m)
+                sorted[k++] = A[i++];
+
+            // Put the possible remaining right part into the sorted array.
+            while (j <= r)
+                sorted[k++] = A[j++];
+
+            //System.arraycopy(sorted, 0, A, l, sorted.length);
+            Array.Copy(sorted, 0, A, l, sorted.Count());
+            //sorted.ToArray().CopyTo(0,A, l, sorted.Count());
         }
         private static void subprocess(int[] ar, int pilot)
         {
