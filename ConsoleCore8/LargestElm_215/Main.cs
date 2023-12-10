@@ -22,34 +22,43 @@ namespace ConsoleCore8.LargestElm_215
             int a0= QuickSelect(list, k);
             //find max item in array O(log(n))
             List<int> aRet = new List<int>();
-            int a = Maxnumber(nums, aRet);
+            int a = Maxnumber(nums, aRet, 0);
 
             //mergeSort(nums, 0, nums.Length - 1);
             ////System.Diagnostics.Debug.WriteLine("max number: {0}", a);
             //PrintValues(nums);
         }
-        private static int Maxnumber(int[] ar, List<int> aRet)
+        private static int Maxnumber(int[] ar, List<int> aRet, int level)
         {
             int ret = 0;
             if (ar.Length < 3)
             {
-                if(ar.Length == 1)
+                if (ar.Length == 1)
                 {
-                    int tmp=ar[0];
+                    int tmp = ar[0];
                     aRet.Add(tmp);
                     return tmp;
                 }
                 else
                 {
                     int tmp = ar[0] > ar[1] ? ar[0] : ar[1];
-                    aRet.Add(tmp);
+                    if (ar[0] > ar[1])
+                    {
+                        aRet.Add(ar[1]);
+                        aRet.Add(ar[0]);
+                    }
+                    else
+                    {
+                        aRet.Add(ar[1]);
+                        aRet.Add(ar[0]);
+                    }
                     return tmp;
                 }
             }
             int m = ar.Length / 2;
-
-            int RL = Maxnumber(ar[0..m],aRet); ;
-            int RR = Maxnumber(ar[m..],aRet);
+            level = level + 1;
+            int RL = Maxnumber(ar[0..m], aRet, level);
+            int RR = Maxnumber(ar[m..], aRet, level);
 
             return ret = RL > RR ? RL : RR;
         }
