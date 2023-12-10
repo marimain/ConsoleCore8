@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Net.NetworkInformation;
@@ -12,18 +13,41 @@ namespace ConsoleCore8.SortArray_912
 {
     internal class Main
     {
-        static int[] nums = { 4, 5, 11, 2, 258, 3, 1, 8, 9, 345, 4, 88, 2, 32, 245,25,54,48,78 };
-        
+        static int[] nums = [5, 2, 3, 1]; // [3, 2, 1, 5, 6, 4]; //{ 4, 5, 11, 2, 258, 3, 1, 8, 9, 345, 4, 88, 2, 32, 245,25,54,48,78 };
+        static List<int> lst = [4, 5, 11, 2, 258, 3, 1, 8, 9, 345, 4, 88, 2, 32, 245, 25, 54, 48, 78];
+        static List<int> lsth = [3, 2, 1, 5, 6, 4];
+        public static void Process2()
+        {
+
+ 
+            //int a = Maxnumber(nums);
+            int b = Maxnumber(lsth);
+
+            lsth.Remove(b);
+            b = Maxnumber(lsth);
+            System.Diagnostics.Debug.WriteLine("max number: {0}", b);
+        }
+        public static void PrintIndexAndValues(Array myArray)
+        {
+            for (int i = myArray.GetLowerBound(0); i <= myArray.GetUpperBound(0); i++)
+                Console.WriteLine("\t[{0}]:\t{1}", i, myArray.GetValue(i));
+        }
         public static void Process()
         {
             int m = nums.Count() / 2;
             int[] arl = nums[0..m];
             int[] arr = nums[m..];
-
+            nums =[ 2,5,1,3];
+            nums =[ 5,2,6,1,9,3];
+            //Direct sort 2 part array. [ 2,5,6,1,3,9];
+            //merge(nums, 0, 2, 5);
+            
+            //find max item in array O(log(n))
             int a = Maxnumber(nums);
-            //int a = FindMax(arl, arr);
-            //int a = mergeSort(nums, l, m);
-            System.Diagnostics.Debug.WriteLine("max number: {0}", a);
+
+            mergeSort(nums, 0, nums.Length - 1);
+            //System.Diagnostics.Debug.WriteLine("max number: {0}", a);
+            PrintValues(nums);
         }
         private static int Maxnumber(int[] ar)
         {
@@ -48,108 +72,78 @@ namespace ConsoleCore8.SortArray_912
             ret = retl > retr ? retl : retr;
             return ret;
         }
-        private static int FindMax(int[] arl, int[] arr)
-        {
-            //{ 4, 5, 11, 2, 258, 3, 1, 8, 9, 101, 4, 88, 2, 32, 245,25,54,48,78 };
-            //4,5,11  2,3,1
-            int retl = 0;
-            int retr = 0;
-            if (arl.Count() > 2)
-            {
-                int ml = arl.Count() / 2;
-                retl = FindMax(arl[0..ml], arl[ml..]);
-            }
-            else
-            {
-                if (arl.Count() == 1)
-                {
-                    retl = arl[0];
-                }
-                else
-                {
-                    retl = arl[0] > arl[1] ? arl[0] : arl[1];
-                }
-                
-            }
-            if (arr.Count() > 2)
-            {
-                int mr = arr.Count() / 2;
-                retr = FindMax(arr[0..mr], arr[mr..]);
-            }
-            else
-            {
-                if (arr.Count() == 1)
-                {
-                    retr = arr[0];
-                }
-                else
-                {
-                    retr = arr[0] > arr[1] ? arr[0] : arr[1];
-                }
-                
-            }
-
-            if (retl > retr)
-            {
-                return retl;
-            }
-            else
-            {
-               return retr;
-            }
-            
-        }
-        private static int mergeSort(int[] ar, int l, int r)
+        private static int Maxnumber(List<int> ar)
         {
             int ret = 0;
-            int m= (l + r) / 2;
-            int[] arl = ar[0..m];
-            int[] arr = ar[m..];
-            if (l >= r)
+            int retl = 0, retr = 0;
+
+            if (ar.Count() < 3)
             {
-                return ret;
+
+                if (ar.Count() == 1)
+                {
+                    return ar[0];
+                }
+                else
+                {
+                    return ar[0] > ar[1] ? ar[0] : ar[1];
+                }
+                
             }
-
-            mergeSort(nums, l, m);
-            mergeSort(nums, m + 1, r);
-
+            int m = ar.Count() / 2;
+            retl =Maxnumber(ar[0..m]);
+            retr = Maxnumber(ar[m..]);
+            ret = retl > retr ? retl : retr;
             return ret;
         }
-        private static void mergeSort2(int[] nums, int l, int r)
+      
+
+        private static void mergeSort(int[] nums, int L, int R)
         {
-            if (l>=r)
+            if (L>=R)
             {
                 return;
             }
-            var m= (l + r) / 2;
-            mergeSort(nums, l, m);
-            mergeSort(nums, m + 1, r);
-            merge(nums, l, m, r);
+            var M= (L + R) / 2;
+            mergeSort(nums, L, M);
+            mergeSort(nums, M + 1, R);
+            merge(nums, L, M, R);
         }
 
-        private static void merge(int[] A, int l, int m, int r)
+        //sort a 2 parts array, in 2 part, sub array sorted already
+        private static void merge(int[] A, int L, int M, int R)
         {
-            int[] sorted = new int[r - l + 1];
+            //[5, 2, 3, 1]
+            //[ 2,5,6,1,3,9];
+            int[] sorted = new int[R - L + 1];
             int k = 0;     // sorted's index
-            int i = l;     // left's index
-            int j = m + 1; // right's index
+            int i = L;     // left's index
+            int j = M + 1; // right's index
 
-            while (i <= m && j <= r)
+            while (i <= M && j <= R)
                 if (A[i] < A[j])
-                    sorted[k++] = A[i++];
+                {
+                    sorted[k] = A[i];
+                    k++;
+                    i++;
+                }
                 else
-                    sorted[k++] = A[j++];
+                {
+                    sorted[k] = A[j];
+                    k++;
+                    j++;
+                }
 
             // Put the possible remaining left part into the sorted array.
-            while (i <= m)
+            while (i <= M)
                 sorted[k++] = A[i++];
 
             // Put the possible remaining right part into the sorted array.
-            while (j <= r)
+            while (j <= R)
                 sorted[k++] = A[j++];
 
             //System.arraycopy(sorted, 0, A, l, sorted.length);
-            Array.Copy(sorted, 0, A, l, sorted.Count());
+            Array.Copy(sorted, 0, A, L, sorted.Count());
             //sorted.ToArray().CopyTo(0,A, l, sorted.Count());
         }
         private static void subprocess(int[] ar, int pilot)
